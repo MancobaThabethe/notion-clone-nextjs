@@ -11,6 +11,8 @@ import { BlockNoteEditor } from "@blocknote/core"
 import { useCreateBlockNote } from "@blocknote/react"
 import "@blocknote/core/fonts/inter.css"
 import "@blocknote/shadcn/style.css"
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"
+import TranslateDocument from "./TranslateDocument"
 
 type EditorProps = {
     doc: Y.Doc
@@ -25,27 +27,28 @@ function Editor() {
   const [darkMode, setDarkmode] = useState(false)
 
   useEffect(() => {
-    if(room){
+    if(!room) throw new Error("No active room")
+
       const ydoc = new Y.Doc()
       const yprovider = new LiveblocksYjsProvider(room, ydoc)
-      setDoc(ydoc)
-      setProvider(provider)
-      console.log(doc, provider, room)
+
+      setDoc(() => ydoc)
+      setProvider(() => yprovider)
 
     //   Clean up functions if user leaves room
       return () => {
           ydoc?.destroy()
           yprovider?.destroy()
       }
-    }
   }, [room])
 
-  if(!doc || !provider) return null
+  if(!doc || !provider) return <LoadingSpinner />
 
   return (
     <div className="max-w-6xl mx-auto ">
         <div className="flex items-center gap-2 justify-end">
             {/* Translate Document AI */}
+            <TranslateDocument document={doc} />
             {/* Chat to Document */}
 
             {/* Dark Mode */}
@@ -68,14 +71,14 @@ function BlockNote({doc, provider, darkMode}: EditorProps) {
           fragment: doc.getXmlFragment("document-store"),
           user: {
               name: userInfo?.name,
-              color: stringToColor(userInfo?.email)
+              color: 'green'
           }
       }
     }) 
     
         return (
         <div className="relative max-w-6xl mx-auto">
-            <BlockNoteView editor={editor} theme={darkMode ? "dark" : "light"} className="min-h-screen" />
+          <BlockNoteView editor={editor} theme={darkMode ? "dark" : "light"} className={`min-h-screen`} style={{boxSizing: "border-box", padding: "1rem"}} />
         </div>
     )
 }

@@ -9,14 +9,17 @@ import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
 import { useUser } from "@clerk/nextjs"
 import Editor from "../Editor/Editor"
 import { useRoom } from "@liveblocks/react/suspense"
+import useOwner from "@/lib/useOwner"
+import DeleteDocument from "../Buttons/DeleteDocument"
+import InviteUser from "../Buttons/InviteUserButton"
+import ManageUsersButton from "../Buttons/ManageUsersButton"
+import Avatars from "./Avatars"
 
 function Document({id}: {id: string}) {
     const [data, loading, error] = useDocumentData(doc(db, "documents", id))
     const [input, setInput] = useState<string>("")
     const [isUpdating, startTransition] = useTransition()
-    const isOwner = useUser()
-    const room = useRoom()
-    console.log(room)
+    const isOwner = useOwner()
 
   useEffect(() => {
     if(data) setInput(data.title)
@@ -38,15 +41,38 @@ function Document({id}: {id: string}) {
   }
   
     return (
-    <div>
+    <div className="flex-1 h-full bg-white p-5 rounded-xl shadow-lg">
         <div className="flex max-w-6xl mx-auto justify-between pb-5">
             {/* Update title Input */}
             <form onSubmit={handleUpdate} className="flex flex-1 space-x-2">
-                <Input value={input} onChange={(e) => setInput(e.target.value)} className="text-black"/>
+                <Input value={input} onChange={(e) => setInput(e.target.value)} className="text-black border border-gray-400 text-xl"/>
                 <Button className="inline bg-black" onClick={handleUpdate} disabled={isUpdating} type="submit">{isUpdating ? "Updating..." : "Update"}</Button>
+                {
+                  isOwner && (
+                    <>
+                      {/* Invite user */}
+                      <InviteUser />
+
+                      {/* Delete document */}
+                      <DeleteDocument />
+                      <p className="text-black">I own this shit</p>
+                    </>
+                  )
+                }
             </form>
         </div>
+
+        <div className="flex max-w-6xl mx-auto justify-between items-center mb-5">
+            {/* Manage Users */}
+            <ManageUsersButton />
+
+            {/* Avatars */}
+            <Avatars />
+        </div>
+
         <h1 className="text-4xl text-center font-light text-black">{data?.title}</h1>
+
+        {/* Collaborative Editor */}
         <Editor />
     </div>
   )

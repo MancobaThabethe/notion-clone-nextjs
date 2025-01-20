@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation"
 function Layout({children}: {children: React.ReactNode}) {
   const id = usePathname().split("/")[2]
   return (
-    <RoomProvider roomId={id}>{children}</RoomProvider>
+    <RoomProvider roomId={id}>
+      {children}
+    </RoomProvider>
   )
 }
 

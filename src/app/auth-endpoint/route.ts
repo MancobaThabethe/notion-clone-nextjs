@@ -6,9 +6,12 @@ import { auth } from "@clerk/nextjs/server";
 export async function POST(req: NextRequest) {
     // auth().protect() // Ensure user is authenticated
 
-    const { sessionClaims } = await auth()
+    const authenticate = await auth()
+    const { sessionClaims } = await authenticate
 
-    if(!sessionClaims) throw new Error("Not authenticated")
+    if(!sessionClaims) {
+        authenticate.redirectToSignIn()
+    }
 
     const { room } = await req.json()
 
@@ -26,7 +29,6 @@ export async function POST(req: NextRequest) {
     if(userInRoom?.exists){
         session.allow(room, session.FULL_ACCESS)
         const { body, status } = await session.authorize()
-
         return new Response(body, { status })
     } else {
         return NextResponse.json({
