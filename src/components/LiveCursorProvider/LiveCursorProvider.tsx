@@ -6,7 +6,7 @@ function LiveCursorProvider({children}: {children: React.ReactNode}) {
   const [myPresence, updateMyPresence] = useMyPresence() // Real-time user's cursor coordinates
   const others = useOthers() // Real-time other users' cursor coordinates
   
-    const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const handlePointerMove = (event: React.PointerEvent) => {
         updateMyPresence({
             cursor: {
                 x: Math.floor(event.pageX),

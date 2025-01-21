@@ -17,7 +17,7 @@ import ChatToDocument from "./ChatToDocument"
 
 type EditorProps = {
     doc: Y.Doc
-    provider: any
+    provider: unknown
     darkMode: boolean
 }
 

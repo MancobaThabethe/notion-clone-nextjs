@@ -7,12 +7,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { useRoom } from "@liveblocks/react/suspense"
 
 function Avatars() {
     const others = useOthers()
     const self = useSelf()
-    const room = useRoom().getOthers()
 
     const all = [self, ...others]
 

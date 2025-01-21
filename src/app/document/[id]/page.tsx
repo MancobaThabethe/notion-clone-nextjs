@@ -1,13 +1,15 @@
+"use client"
 import Document from "@/components/Document/Document"
+import { useRoom } from "@liveblocks/react/suspense"
 
-async function Page({params}: {params: {id: string}}) {
+function Page() {
     // Get document id from navigation
-    const { id } = await params
+    const room = useRoom()
 
     return (
       // Move Room Provider to Layout in future
       <main className="flex flex-col flex-1 min-h-screen">
-          <Document id={id} />
+          <Document id={room.id} />
       </main>
   )
 }
