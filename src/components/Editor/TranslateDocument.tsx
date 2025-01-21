@@ -10,33 +10,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { LanguagesIcon } from 'lucide-react'
+import { Language } from '../../../types/types' 
+import { BotIcon, LanguagesIcon } from 'lucide-react'
+import Markdown from 'react-markdown'
 import { toast } from 'sonner'
 
-
-type Language = | "english" | "spanish" | "portuguese" | "german" | "french" | "italian" | "russian" | "chinese" | "japanese" | "isizulu" | "swahili" | "arabic" | "hindi" | "bengali" | "korean" | "polish" | "romanian" | "swedish" | "thai" | "turkish" | "vietnamese" | "chinese simplified" | "chinese traditional" | "japanese" | "portuguese" | "afrikaans" | "dutch" | "mexican"
-
-const languages: Language[] = [
-    "english",
-    "afrikaans",
-    "chinese",
-    "isizulu",
-    "italian",
-    "mexican",
-    "hindi",
-    "russian",
-    "japanese",
-    "korean",
-    "portuguese",
-    "german",
-    "french"
-]
+const languages: Language[] = ["afrikaans", "amharic", "arabic", "armenian", "azerbaijani", "bengali", "bosnian", "bulgarian", "catalan", "cebuano", "chinese", "chinese simplified", "chinese traditional", "croatian", "czech", "danish", "dutch", "english", "estonian", "finnish", "french", "galician", "georgian", "german", "greek", "gujarati", "haitian creole", "hausa", "hebrew", "hindi", "hungarian", "icelandic", "igbo", "indonesian", "irish", "italian", "japanese", "javanese", "kannada", "kazakh", "khmer", "korean", "kurdish", "kyrgyz", "lao", "latin", "latvian", "lithuanian", "luxembourgish", "macedonian", "malagasy", "malay", "malayalam", "maltese", "maori", "mongolian", "nepali", "norwegian", "pashto", "persian", "polish", "portuguese", "punjabi", "romanian", "russian", "serbian", "sindhi", "sinhala", "slovak", "slovenian", "somali", "spanish", "swahili", "swedish", "tajik", "tamil", "telugu", "thai", "turkish", "ukrainian", "urdu", "uzbek", "vietnamese", "welsh", "xhosa", "yoruba", "zulu"];
 
 function TranslateDocument({document}: {document: Y.Doc}) {
   const [isOpen, setIsOpen] = useState(false)
   const [language, setLanguage] = useState<Language | string>('')
   const [summary, setSummary] = useState('')
-  const [question, setQuestion] = useState('')
   const [isTranslating, startTransition] = useTransition()
 
   const handleAskQuestion = (e: FormEvent) => {
@@ -44,33 +28,32 @@ function TranslateDocument({document}: {document: Y.Doc}) {
 
     startTransition(async () => {
         const documentData = document.get("document-store").toJSON()
-        console.log("starting translating ")
 
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/translate`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    documentData,
-                    targetLanguage: language,
-                })
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/translate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                documentData,
+                targetLanguage: language,
             })
+        })
 
-            if(response.ok){
-                const { translated_text } = await response.json()
-                console.log("response: ", translated_text)
-                setSummary(translated_text)
-                toast.success('Document translated successfully')
-            }    
-        } catch (error) {
-            console.error(error)
-            toast.error("Something went wrong. Failed to translate document!")
+        if(response.ok){
+            const { translated_text } = await response.json()
+            console.log("response: ", translated_text)
+            setSummary(translated_text)
+            toast.success('Document successfully translated!')
         }
-        
+
+        if(!response.ok){
+            const { error } = await response.json()
+            console.log("response: ", error)
+            toast.error("Oops! Something went wrong. Try again later.")
+        }
     })
-  }
+}
 
     return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -86,10 +69,23 @@ function TranslateDocument({document}: {document: Y.Doc}) {
 
                 <hr className='mt-5 border-gray-400'/>
                 </DialogHeader>
+
+                {
+                    summary && (
+                        <div className='flex flex-col items-start max-h-96 overflow-y-scroll gap-2 p-5 bg-gray-100 text-black'>
+                            <div className="flex">
+                                <BotIcon className='w-10 flex-shrink-0' />
+                                <p className='font-bold'>GPT {isTranslating ? 'is thinking' : 'says: '}</p>
+                            </div>
+                            <Markdown>{isTranslating ? 'Thinking...' : summary}</Markdown>
+                        </div>
+                    )
+                }
+
                 <form action="submit" className="flex space-x-2" onSubmit={handleAskQuestion} >
                   <Select value={language} onValueChange={(value) => setLanguage(value)}>
                     <SelectTrigger className='w-full text-black'>
-                        <SelectValue placeholder="Select a language" />
+                        <SelectValue placeholder="Select a language"/>
                     </SelectTrigger>
                     <SelectContent>
                         {languages.map((language) => (

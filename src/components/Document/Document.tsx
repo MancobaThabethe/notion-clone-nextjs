@@ -5,10 +5,7 @@ import { Input } from "../ui/input"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../../firebase"
 import { useDocumentData } from "react-firebase-hooks/firestore"
-import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
-import { useUser } from "@clerk/nextjs"
 import Editor from "../Editor/Editor"
-import { useRoom } from "@liveblocks/react/suspense"
 import useOwner from "@/lib/useOwner"
 import DeleteDocument from "../Buttons/DeleteDocument"
 import InviteUser from "../Buttons/InviteUserButton"
@@ -55,7 +52,6 @@ function Document({id}: {id: string}) {
 
                       {/* Delete document */}
                       <DeleteDocument />
-                      <p className="text-black">I own this shit</p>
                     </>
                   )
                 }

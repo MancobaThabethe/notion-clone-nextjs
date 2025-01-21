@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { ArrowLeftCircleIcon } from "lucide-react";
 
 export default function Home() {

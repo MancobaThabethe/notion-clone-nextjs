@@ -13,6 +13,7 @@ import "@blocknote/core/fonts/inter.css"
 import "@blocknote/shadcn/style.css"
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"
 import TranslateDocument from "./TranslateDocument"
+import ChatToDocument from "./ChatToDocument"
 
 type EditorProps = {
     doc: Y.Doc
@@ -50,6 +51,7 @@ function Editor() {
             {/* Translate Document AI */}
             <TranslateDocument document={doc} />
             {/* Chat to Document */}
+            <ChatToDocument document={doc} />
 
             {/* Dark Mode */}
             <Button onClick={() => setDarkmode(!darkMode)} className={`${darkMode ? "text-gray-300 bg-gray-700 hover:bg-gray-100 hover:text-gray-700" : "text-gray-700 bg-gray-200 hover:bg-gray-400 hover:text-gray-700"}`}>{darkMode ? <SunIcon /> : <MoonIcon />}</Button>
