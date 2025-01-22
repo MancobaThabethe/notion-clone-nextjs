@@ -2,6 +2,8 @@
 import { auth } from "@clerk/nextjs/server"
 import { adminDb } from "../firebase-admin"
 import liveblocks from "@/lib/liveblocks"
+import { collectionGroup, doc, getDoc, query, where } from "firebase/firestore"
+import { db } from "../firebase"
 
 export async function createNewDoucment() {
     const authenticate = await auth()
@@ -71,6 +73,7 @@ export async function inviteUser(id: string, email: string) {
     }
 
     try{
+        
         await adminDb.collection("users").doc(email).collection("rooms").doc(id).set({
             userId: email,
             role: "editor",
@@ -78,10 +81,10 @@ export async function inviteUser(id: string, email: string) {
             roomId: id
         })
 
-        return{ success: true }
+        return{ success: true, userExists: true }
     }catch(error){
         console.error(error)
-        return{ success: false }
+        return{ success: false, userExists: false }
     }
 }
 

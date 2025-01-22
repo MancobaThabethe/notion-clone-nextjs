@@ -57,8 +57,8 @@ function TranslateDocument({document}: {document: Y.Doc}) {
 
     return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <Button asChild variant={'outline'} className="text-black border-black hover:opacity-90 font-medium">
-            <DialogTrigger><LanguagesIcon/>Translate</DialogTrigger>
+        <Button asChild size={'sm'} variant={'outline'} className="text-black border-black hover:opacity-90 font-medium">
+            <DialogTrigger><LanguagesIcon />Translate</DialogTrigger>
         </Button>
             <DialogContent>
                 <DialogHeader>

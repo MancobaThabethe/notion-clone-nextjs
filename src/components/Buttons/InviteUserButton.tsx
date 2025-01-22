@@ -25,14 +25,16 @@ function InviteUserButton() {
     if(!id) return
 
     startTransition(async () => {
-        const { success } = await inviteUser(id, email)
+        const { success, userExists } = await inviteUser(id, email)
 
         if(success){
             setIsOpen(false)
             setEmail('')
             toast.success(`${email} added to Room successfully`)
+        }else if(!userExists){
+            toast.error("User does not exist! Try checking the email again.")
         }else{
-            toast.error("Something went wrong. Failed to add user to the room!")
+            toast.error("Oops! Something went wrong. Failed to invite user to the room!")
         }
     })
   }
@@ -40,7 +42,7 @@ function InviteUserButton() {
     return (
     <div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <Button asChild variant={'outline'} className="text-black border-black hover:opacity-90">
+            <Button asChild variant={'outline'} className="text-black border-black hover:opacity-90" size={'sm'}>
                 <DialogTrigger>Invite</DialogTrigger>
             </Button>
             <DialogContent>

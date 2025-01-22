@@ -3,6 +3,7 @@ import { SquareMenu } from "lucide-react"
 import NewDocumentButton from "../Buttons/NewDocumentButton"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -13,8 +14,9 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { useUser } from "@clerk/nextjs"
 import { collectionGroup, DocumentData, query, where } from "firebase/firestore"
 import { db } from "../../../firebase"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import SidebarOption from "../SidebarOptions/SidebarOption"
+import { SidebarContext } from "@/providers/SidebarProvider"
 
 interface RoomDocument extends DocumentData {
   createdAt: string,
@@ -26,6 +28,7 @@ interface RoomDocument extends DocumentData {
 
 function Sidebar() {
   const user = useUser().user
+  const sidebarState = useContext(SidebarContext)
   
   const [groupedData, setGroupedData] = useState<{
     owner: RoomDocument[],
@@ -96,25 +99,22 @@ function Sidebar() {
   )
   
   return (
-    <div className="p-2 md:p-5 relative bg-gray-200 ">
+    <div className="p-2 hidden md:block md:p-5 relative bg-gray-200 ">
         <div className="hidden md:inline">
             <div>{menuOptions}</div>
         </div>
 
         {/* Sheet */}
-        <div className="md:hidden bg-slate-600">
-          <Sheet>
-            <SheetTrigger className=" text-black block">
+        <div className="md:hidden">
+          <Sheet open={sidebarState?.isOpen.state}>
+            <SheetTrigger className=" text-black md:block sm:hidden" onClick={() => sidebarState?.updateIsOpen(sidebarState?.isOpen.state)}>
               <SquareMenu />
             </SheetTrigger>
                 <SheetContent className="w-[400px] sm:w-[540px]" side={'left'}>
+                    <SheetClose className="text-black p-1 border hover:border-black rounded-lg md:hidden font-medium" style={{float: 'right'}} onClick={() => sidebarState?.updateIsOpen(sidebarState?.isOpen.state)} >X</SheetClose>
                     <SheetHeader>
                         <SheetTitle>Menu</SheetTitle>
                         <div>{menuOptions}</div>
-                            <SheetDescription>
-                                This action cannot be undone. This will permanently delete your account
-                                and remove your data from our servers.
-                            </SheetDescription>
                     </SheetHeader>
                 </SheetContent>
           </Sheet>

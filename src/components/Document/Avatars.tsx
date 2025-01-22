@@ -16,15 +16,15 @@ function Avatars() {
 
     return (
     <div className="flex gap-2 items-center">
-        <p className="text-sm text-gray-700">Users currently editing this page</p>
+        <p className="text-xs md:text-sm text-gray-700">Users currently editing this page</p>
         <div className="flex -space-x-5">
-            <TooltipProvider >
+            <TooltipProvider>
                 {
                     all.map((user, i) => (
                         
                             <Tooltip key={'tooptip' + i}>
                                 <TooltipTrigger asChild>
-                                    <Avatar key={i} className="border-2 hover:z-50">
+                                    <Avatar key={i} className="border-2 hover:z-50 w-7 h-7 md:w-10 md:h-10">
                                         <AvatarImage src={user?.info.avatar} />
                                         <AvatarFallback>{user?.info.email}</AvatarFallback>
                                     </Avatar>

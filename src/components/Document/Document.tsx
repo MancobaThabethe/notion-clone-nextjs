@@ -38,21 +38,23 @@ function Document({id}: {id: string}) {
   }
   
     return (
-    <div className="flex-1 h-full bg-white p-5 rounded-xl shadow-lg">
+    <div className="flex-1 h-full bg-white p-1 md:p-5 rounded-xl shadow-lg">
         <div className="flex max-w-6xl mx-auto justify-between pb-5">
             {/* Update title Input */}
-            <form onSubmit={handleUpdate} className="flex flex-1 space-x-2">
-                <Input value={input} onChange={(e) => setInput(e.target.value)} className="text-black border border-gray-400 text-xl"/>
-                <Button className="inline bg-black" onClick={handleUpdate} disabled={isUpdating} type="submit">{isUpdating ? "Updating..." : "Update"}</Button>
+            <form onSubmit={handleUpdate} className="flex flex-col w-full sm:flex-row flex-1 space-x-2">
+                <div className="flex gap-1 flex-1 my-1 md:my-0">
+                  <Input value={input} onChange={(e) => setInput(e.target.value)} className="text-black border border-gray-400 md:text-xl"/>
+                  <Button className="inline bg-black" onClick={handleUpdate} disabled={isUpdating} type="submit" size={'sm'} >{isUpdating ? "Updating..." : "Update"}</Button>
+                </div>
                 {
                   isOwner && (
-                    <>
+                    <div className="flex gap-2 justify-end my-1 md:my-0">
                       {/* Invite user */}
                       <InviteUser />
 
                       {/* Delete document */}
                       <DeleteDocument />
-                    </>
+                    </div>
                   )
                 }
             </form>

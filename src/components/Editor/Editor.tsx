@@ -47,7 +47,7 @@ function Editor() {
 
   return (
     <div className="max-w-6xl mx-auto ">
-        <div className="flex items-center gap-2 justify-end">
+        <div className="flex items-center gap-2 justify-center sm:justify-end my-2 sm:my-0">
             {/* Translate Document AI */}
             <TranslateDocument document={doc} />
             {/* Chat to Document */}

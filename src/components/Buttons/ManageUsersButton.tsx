@@ -45,7 +45,7 @@ function ManageUsersButton() {
     return (
     <div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <Button asChild variant={'outline'} className="text-black border-black hover:opacity-90">
+            <Button asChild variant={'outline'} size={'sm'} className="text-black border-black hover:opacity-90">
                 <DialogTrigger>Users ({usersInRoom?.docs.length})</DialogTrigger>
             </Button>
             <DialogContent>

@@ -41,7 +41,7 @@ function ChatToDocument({ document }: { document: Y.Doc }) {
 
     return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <Button asChild variant={'outline'} className="text-black border-black hover:opacity-90 font-medium">
+        <Button asChild variant={'outline'} size={'sm'} className="text-black border-black hover:opacity-90 font-medium">
             <DialogTrigger><MessageCircleQuestionIcon/>Chat to Document</DialogTrigger>
         </Button>
             <DialogContent>

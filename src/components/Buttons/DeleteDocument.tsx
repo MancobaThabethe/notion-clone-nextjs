@@ -32,6 +32,7 @@ function DeleteDocument() {
             setIsOpen(false)
             router.replace('/')
             toast.success("Room deleted successfully")
+            toast.dismiss()
         }else{
             toast.error("Something went wrong. Failed to delete room!")
         }
@@ -41,7 +42,7 @@ function DeleteDocument() {
     return (
     <div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <Button asChild variant={'destructive'}>
+            <Button asChild variant={'destructive'} size={'sm'}>
                 <DialogTrigger>Delete</DialogTrigger>
             </Button>
             <DialogContent>
